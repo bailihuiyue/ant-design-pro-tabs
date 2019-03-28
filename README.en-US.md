@@ -1,10 +1,10 @@
-[English](./README.en-US.md) | [简体中文](./README.md) | Русский | [Türkçe](./README.tr-TR.md)
+English | [简体中文](./README.md) | [Русский](./README.ru-RU.md)  | [Türkçe](./README.tr-TR.md)
 
 <h1 align="center">Ant Design Pro</h1>
 
 <div align="center">
 
-UI-решение "из коробки" для корпоративных приложений как React boilerplate
+An out-of-box UI solution for enterprise applications as a React boilerplate.
 
 [![Build With Umi](https://img.shields.io/badge/build%20with-umi-028fe4.svg?style=flat-square)](http://umijs.org/)
 [![Build Status](https://dev.azure.com/ant-design/ant-design-pro/_apis/build/status/ant-design.ant-design-pro?branchName=master)](https://dev.azure.com/ant-design/ant-design-pro/_build/latest?definitionId=1?branchName=master)
@@ -17,30 +17,33 @@ UI-решение "из коробки" для корпоративных при
 
 </div>
 
-- Демо: http://preview.pro.ant.design
-- Домашняя страница: http://pro.ant.design
-- Документация: http://pro.ant.design/docs/getting-started
-- История изменений: http://pro.ant.design/docs/changelog
+- Preview: http://preview.pro.ant.design
+- Home Page: http://pro.ant.design
+- Documentation: http://pro.ant.design/docs/getting-started
+- ChangeLog: http://pro.ant.design/docs/changelog
 - FAQ: http://pro.ant.design/docs/faq
-- Китайское зеркало сайта: http://ant-design-pro.gitee.io
+- Mirror Site in China: http://ant-design-pro.gitee.io
 
-## Поиск переводчиков :loudspeaker:
+## 2.0 Released Now! 🎉🎉🎉
+[Announcing Ant Design Pro 2.0.0](https://medium.com/ant-design/beautiful-and-powerful-ant-design-pro-2-0-release-51358da5af95)
 
-Нам нужна ваша помощь: https://github.com/ant-design/ant-design-pro/issues/120
+## Translation Recruitment :loudspeaker:
 
-## Возможности
+We need your help: https://github.com/ant-design/ant-design-pro/issues/120
 
-- :gem: **Аккуратный дизайн**: Посмотрите [спецификацию Ant Design](http://ant.design/)
-- :triangular_ruler: **Общие шаблоны**: Стандартные шаблоны для корпоративных приложений
-- :rocket: **Разработка, как искусство**: Новейший стек технологий React/umi/dva/antd
-- :iphone: **Отзывчивая верстка**: Создан для экранов разных размеров
-- :art: **Темизация**: Возможность изменения темы с помощью конфигурации
-- :globe_with_meridians: **Мультиязычность**: Встроенное i18n решение
-- :gear: **Лучшие практики**: Надежные процессы для хорошего кода
-- :1234: **Разработка по шаблону**: Простое в использовании решение для разработки
-- :white_check_mark: **UI тесты**: Разрабатывайте безопасно с юнит и e2e тестами
+## Features
 
-## Шаблоны
+- :gem: **Neat Design**: Follow [Ant Design specification](http://ant.design/)
+- :triangular_ruler: **Common Templates**: Typical templates for enterprise applications
+- :rocket: **State of The Art Development**: Newest development stack of React/umi/dva/antd
+- :iphone: **Responsive**: Designed for variable screen sizes
+- :art: **Theming**: Customizable theme with simple config
+- :globe_with_meridians: **International**: Built-in i18n solution
+- :gear: **Best Practices**: Solid workflow to make your code healthy
+- :1234: **Mock development**: Easy to use mock development solution
+- :white_check_mark: **UI Test**: Fly safely with unit and e2e tests
+
+## Templates
 
 ```
 - Dashboard
@@ -75,7 +78,9 @@ UI-решение "из коробки" для корпоративных при
   - Register Result
 ```
 
-## Использование
+## Usage
+
+### Use bash
 
 ```bash
 $ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
@@ -84,20 +89,48 @@ $ npm install
 $ npm start         # visit http://localhost:8000
 ```
 
-Больше информации в [документации](http://pro.ant.design/docs/getting-started).
+### Use by docker
 
-## Совместимость
+```bash
+# preview
+$ docker pull antdesign/ant-design-pro
+$ docker run -p 80:80 antdesign/ant-design-pro
+# open http://localhost
 
-Современные браузеры и IE11.
+# dev
+$ npm run docker:dev
+
+# build
+$ npm run docker:build
+
+
+# production dev
+$ npm run docker-prod:dev
+
+# production build
+$ npm run docker-prod:build
+```
+
+### Use Gitpod
+
+Open the project in Gitpod (free online dev environment for GitHub) and start coding immediately.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ant-design/ant-design-pro)
+
+More instructions at [documentation](http://pro.ant.design/docs/getting-started).
+
+## Browsers support
+
+Modern browsers and IE11.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
 | --------- | --------- | --------- | --------- | --------- |
 | IE11, Edge| last 2 versions| last 2 versions| last 2 versions| last 2 versions
 
-## Распространение
+## Contributing
 
-Любые варианты распространения приветствуются! Вот несколько примеров того, как вы можете помочь распространению проекта:
+Any type of contribution is welcome, here are some examples of how you may contribute to this project:
 
-- Использовать Ant Design Pro в ежедневной работе.
-- Создавать [задачи](http://github.com/ant-design/ant-design-pro/issues) заводить баги или отвечать на вопросы.
-- Делать [pull-реквесты](http://github.com/ant-design/ant-design-pro/pulls) для совершенствования нашего кода.
+- Use Ant Design Pro in your daily work.
+- Submit [issues](http://github.com/ant-design/ant-design-pro/issues) to report bugs or ask questions.
+- Propose [pull requests](http://github.com/ant-design/ant-design-pro/pulls) to improve our code.

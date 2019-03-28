@@ -1,4 +1,4 @@
-[English](./README.md) | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md) | Türkçe
+[English](./README.en-US.md) | [简体中文](./README.md) | [Русский](./README.ru-RU.md) | Türkçe
 
 <h1 align="center">Ant Design Pro</h1>
 

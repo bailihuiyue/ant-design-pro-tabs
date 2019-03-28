@@ -47,6 +47,8 @@ class TabPages extends PureComponent {
             tabList: listObj,
             activeKey: pathname,
         });
+
+        window.onbeforeunload = () => "";
     }
 
     componentWillReceiveProps(nextProps) {
@@ -147,25 +149,25 @@ class TabPages extends PureComponent {
         const { tabList, activeKey } = this.state;
         return (
           <Tabs
-            className={styles.content_tab}
-            activeKey={activeKey}
-            onChange={this.onChange}
-            tabBarStyle={{ background: '#fff' }}
-            tabPosition="top"
-            tabBarGutter={-1}
-            hideAdd
-            type="editable-card"
-            onEdit={this.onEdit}
-          >
-            {Object.keys(tabList).map(item => {
+              className={styles.content_tab}
+              activeKey={activeKey}
+              onChange={this.onChange}
+              tabBarStyle={{ background: '#fff' }}
+              tabPosition="top"
+              tabBarGutter={-1}
+              hideAdd
+              type="editable-card"
+              onEdit={this.onEdit}
+            >
+              {Object.keys(tabList).map(item => {
                     const { tab, key, closable, content } = tabList[item];
                     return (
                       <TabPane tab={tab} key={key} closable={closable}>
-                        {content}
-                      </TabPane>
+                          {content}
+                        </TabPane>
                     );
                 })}
-          </Tabs>
+            </Tabs>
         );
     }
 }

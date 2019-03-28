@@ -37,7 +37,7 @@ class TabPages extends PureComponent {
     let txt = '';
     let words = '';
     unClosedTabs.forEach(key => {
-      txt = `menu.${key.replace('/', '')}`;
+      txt = `menu${key.replace(/\//g, '.')}`;
       words = formatMessage({ id: txt });
       if (key !== homePageKey && txt === words) {
         Object.assign(listObj, { [key]: { closable: true, key, tab: words, content: '' } });

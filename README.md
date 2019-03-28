@@ -22,8 +22,9 @@
 
 - ###### 类库使用:good-storage
 
-- [ ] ###### TODO:隐藏标签实现类vue的keep-alive
+- [ ] ###### TODO:1. 隐藏标签实现类vue的keep-alive
 
+- [ ] ###### BUG:1. 目前通过路由传参会找不到页面,从而报错
 <div align="center">
 
 

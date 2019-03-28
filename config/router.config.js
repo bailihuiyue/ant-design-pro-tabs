@@ -24,12 +24,17 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
+      { path: '/', redirect: '/dashboard/home', authority: ['admin', 'user'] },
       {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',
         routes: [
+          {
+            path: '/dashboard/home',
+            name: 'home',
+            component: './Home',
+          },
           {
             path: '/dashboard/analysis',
             name: 'analysis',

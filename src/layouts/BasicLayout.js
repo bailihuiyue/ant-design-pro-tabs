@@ -12,6 +12,7 @@ import Context from './MenuContext';
 import SiderMenu from '@/components/SiderMenu';
 import getPageTitle from '@/utils/getPageTitle';
 import styles from './BasicLayout.less';
+import TabPages from '@/components/TabPages';
 
 // lazy load SettingDrawer
 const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
@@ -100,7 +101,6 @@ class BasicLayout extends React.Component {
     const {
       navTheme,
       layout: PropsLayout,
-      children,
       location: { pathname },
       isMobile,
       menuData,
@@ -135,8 +135,8 @@ class BasicLayout extends React.Component {
             isMobile={isMobile}
             {...this.props}
           />
-          <Content className={styles.content} style={contentStyle}>
-            {children}
+          <Content>
+            <TabPages {...this.props} />
           </Content>
           <Footer />
         </Layout>

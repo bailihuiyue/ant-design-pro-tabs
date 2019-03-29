@@ -13,15 +13,7 @@ class TabPages extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            tabList: {
-                [homePageKey]: {
-                    closable: false,
-                    key: homePageKey,
-                    tab: formatMessage({ id: 'menu.home' }),
-                    content: <Home />,
-                    locale: 'menu.home',
-                },
-            },
+            tabList: {},
             activeKey: homePageKey,
             stateTabLists: null,
         };
@@ -31,15 +23,14 @@ class TabPages extends PureComponent {
         const {
             location: { pathname },
         } = this.props;
-        const { tabList } = this.state;
         const unClosedTabs = storage.session.get('AntTabs') || [];
-        const listObj = { ...tabList };
+        const listObj = {};
         let txt = '';
         let words = '';
-        unClosedTabs.forEach(key => {
-            txt = `menu${key.replace(/\//g, '.')}`;
-            words = formatMessage({ id: txt });
+        unClosedTabs.forEach((key, i) => {
             if (key !== homePageKey && words.indexOf("menu.") === -1) {
+                txt = `menu${key.replace(/\//g, '.')}`;
+                words = formatMessage({ id: txt });
                 Object.assign(listObj, { [key]: { closable: true, key, tab: words, content: '' } });
             }
         });
@@ -127,9 +118,14 @@ class TabPages extends PureComponent {
         const { tabList, stateTabLists } = this.state;
         const tabLists = stateTabLists || this.updateTreeList(menuData);
         const listObj = { ...tabList };
-
+        debugger
+        // 该路由存在,但是tabs并没有
         if (tabLists[pathname] && !Object.keys(listObj).includes(pathname)) {
             tabLists[pathname].content = children;
+            // 只有一个首页页打开的情况下,首页不可关闭
+            if (Object.keys(listObj).length === 0 && pathname === homePageKey) {
+                tabLists[pathname].closable = false;
+            }
             Object.assign(listObj, { [pathname]: tabLists[pathname] });
         } else if (listObj[pathname] && !listObj[pathname].content) {
             listObj[pathname].content = children;

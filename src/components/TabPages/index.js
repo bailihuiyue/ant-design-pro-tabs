@@ -45,8 +45,12 @@ class TabPages extends PureComponent {
         });
         this.setState({
             tabList: listObj,
-            activeKey: pathname,
+            activeKey: pathname === "/" ? homePageKey : pathname,
         });
+
+        if (pathname === "/") {
+            router.push(homePageKey);
+        }
 
         window.onbeforeunload = () => "";
     }
@@ -120,9 +124,6 @@ class TabPages extends PureComponent {
             location: { pathname },
             menuData,
         } = props;
-        if (pathname === "/") {
-            router.push(homePageKey);
-        }
         const { tabList, stateTabLists } = this.state;
         const tabLists = stateTabLists || this.updateTreeList(menuData);
         const listObj = { ...tabList };

@@ -120,11 +120,14 @@ class TabPages extends PureComponent {
             location: { pathname },
             menuData,
         } = props;
+        if (pathname === "/") {
+            router.push(homePageKey);
+        }
         const { tabList, stateTabLists } = this.state;
         const tabLists = stateTabLists || this.updateTreeList(menuData);
         const listObj = { ...tabList };
 
-        if (!listObj[pathname] && !Object.keys(listObj).includes(pathname)) {
+        if (tabLists[pathname] && !Object.keys(listObj).includes(pathname)) {
             tabLists[pathname].content = children;
             Object.assign(listObj, { [pathname]: tabLists[pathname] });
         } else if (listObj[pathname] && !listObj[pathname].content) {
@@ -134,6 +137,7 @@ class TabPages extends PureComponent {
         if (!stateTabLists) {
             this.setState({ stateTabLists: tabLists });
         }
+        debugger
         this.setState(
             {
                 activeKey: pathname,
@@ -148,22 +152,22 @@ class TabPages extends PureComponent {
     render() {
         const { tabList, activeKey } = this.state;
         return (
-          <Tabs
-              className={styles.content_tab}
-              activeKey={activeKey}
-              onChange={this.onChange}
-              tabBarStyle={{ background: '#fff' }}
-              tabPosition="top"
-              tabBarGutter={-1}
-              hideAdd
-              type="editable-card"
-              onEdit={this.onEdit}
+            <Tabs
+                className={styles.content_tab}
+                activeKey={activeKey}
+                onChange={this.onChange}
+                tabBarStyle={{ background: '#fff' }}
+                tabPosition="top"
+                tabBarGutter={-1}
+                hideAdd
+                type="editable-card"
+                onEdit={this.onEdit}
             >
-              {Object.keys(tabList).map(item => {
+                {Object.keys(tabList).map(item => {
                     const { tab, key, closable, content } = tabList[item];
                     return (
-                      <TabPane tab={tab} key={key} closable={closable}>
-                          {content}
+                        <TabPane tab={tab} key={key} closable={closable}>
+                            {content}
                         </TabPane>
                     );
                 })}

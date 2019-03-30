@@ -6,6 +6,7 @@ import storage from 'good-storage';
 import styles from './page.less';
 
 const { TabPane } = Tabs;
+const errorRoute = "/error";
 
 class TabPages extends PureComponent {
     constructor(props) {
@@ -26,11 +27,11 @@ class TabPages extends PureComponent {
         const listObj = {};
         let txt = '';
         let words = '';
-        unClosedTabs.forEach((key, i) => {
+        unClosedTabs.forEach(key => {
             if (words.indexOf("menu.") === -1) {
                 txt = `menu${key.replace(/\//g, '.')}`;
                 words = formatMessage({ id: txt });
-                Object.assign(listObj, { [key]: { closable: key !== homePageKey , key, tab: words, content: '' } });
+                Object.assign(listObj, { [key]: { closable: key !== homePageKey, key, tab: words, content: '' } });
             }
         });
         this.setState({
@@ -113,16 +114,25 @@ class TabPages extends PureComponent {
             children,
             location: { pathname },
             menuData,
+            errorPage
         } = props;
         const { tabList, stateTabLists } = this.state;
         const tabLists = stateTabLists || this.updateTreeList(menuData);
         const listObj = { ...tabList };
+        let path = pathname;
         // 该路由存在,但是tabs并没有
         if (tabLists[pathname] && !Object.keys(listObj).includes(pathname)) {
             tabLists[pathname].content = children;
             Object.assign(listObj, { [pathname]: tabLists[pathname] });
+            // 刷新页面后,tab会重新打开,但是没有没有内容
         } else if (listObj[pathname] && !listObj[pathname].content) {
             listObj[pathname].content = children;
+            // 路由不存在,一般是在地址栏中输入了不存在的url
+        } else if (!tabLists[pathname]) {
+            if (!listObj[pathname]) {
+                Object.assign(listObj, { [errorRoute]: { closable: true, key: errorRoute, tab: "无权限", content: errorPage } });
+            }
+            path = errorRoute;
         }
 
         if (!stateTabLists) {
@@ -130,7 +140,7 @@ class TabPages extends PureComponent {
         }
         this.setState(
             {
-                activeKey: pathname,
+                activeKey: path,
                 tabList: listObj,
             },
             () => {

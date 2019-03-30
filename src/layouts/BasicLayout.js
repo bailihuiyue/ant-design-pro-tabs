@@ -13,6 +13,7 @@ import SiderMenu from '@/components/SiderMenu';
 import getPageTitle from '@/utils/getPageTitle';
 import styles from './BasicLayout.less';
 import TabPages from '@/components/TabPages';
+import NoAuth from '@/pages/Exception/403';
 
 // lazy load SettingDrawer
 const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
@@ -136,7 +137,7 @@ class BasicLayout extends React.Component {
             {...this.props}
           />
           <Content>
-            <TabPages {...this.props} homePageKey = '/dashboard/home'/>
+            <TabPages {...this.props} homePageKey='/dashboard/home' errorPage={<NoAuth />} />
           </Content>
           <Footer />
         </Layout>

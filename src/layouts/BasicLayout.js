@@ -136,7 +136,7 @@ class BasicLayout extends React.Component {
             {...this.props}
           />
           <Content>
-            <TabPages {...this.props} />
+            <TabPages {...this.props} homePageKey = '/dashboard/home'/>
           </Content>
           <Footer />
         </Layout>

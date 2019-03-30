@@ -2,19 +2,17 @@ import React, { PureComponent } from 'react';
 import router from 'umi/router';
 import { formatMessage } from 'umi/locale';
 import { Tabs } from 'antd';
-import Home from '@/pages/Home';
 import storage from 'good-storage';
 import styles from './page.less';
 
 const { TabPane } = Tabs;
-const homePageKey = '/dashboard/home';
 
 class TabPages extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             tabList: {},
-            activeKey: homePageKey,
+            activeKey: "",
             stateTabLists: null,
         };
     }
@@ -22,16 +20,17 @@ class TabPages extends PureComponent {
     componentWillMount() {
         const {
             location: { pathname },
+            homePageKey
         } = this.props;
-        const unClosedTabs = storage.session.get('AntTabs') || [];
+        const unClosedTabs = storage.session.get('AntTabs') || [homePageKey];
         const listObj = {};
         let txt = '';
         let words = '';
         unClosedTabs.forEach((key, i) => {
-            if (key !== homePageKey && words.indexOf("menu.") === -1) {
+            if (words.indexOf("menu.") === -1) {
                 txt = `menu${key.replace(/\//g, '.')}`;
                 words = formatMessage({ id: txt });
-                Object.assign(listObj, { [key]: { closable: true, key, tab: words, content: '' } });
+                Object.assign(listObj, { [key]: { closable: key !== homePageKey , key, tab: words, content: '' } });
             }
         });
         this.setState({
@@ -40,7 +39,7 @@ class TabPages extends PureComponent {
         });
 
         if (pathname === "/") {
-            router.push(homePageKey);
+            router.replace(homePageKey);
         }
 
         window.onbeforeunload = () => "";
@@ -118,14 +117,9 @@ class TabPages extends PureComponent {
         const { tabList, stateTabLists } = this.state;
         const tabLists = stateTabLists || this.updateTreeList(menuData);
         const listObj = { ...tabList };
-        debugger
         // 该路由存在,但是tabs并没有
         if (tabLists[pathname] && !Object.keys(listObj).includes(pathname)) {
             tabLists[pathname].content = children;
-            // 只有一个首页页打开的情况下,首页不可关闭
-            if (Object.keys(listObj).length === 0 && pathname === homePageKey) {
-                tabLists[pathname].closable = false;
-            }
             Object.assign(listObj, { [pathname]: tabLists[pathname] });
         } else if (listObj[pathname] && !listObj[pathname].content) {
             listObj[pathname].content = children;
@@ -134,7 +128,6 @@ class TabPages extends PureComponent {
         if (!stateTabLists) {
             this.setState({ stateTabLists: tabLists });
         }
-        debugger
         this.setState(
             {
                 activeKey: pathname,

@@ -30,6 +30,23 @@
 
   ######          ~~3. 目前redirect到默认页面后,默认标签不高亮~~
 
+使用方法: 
+
+1. 复制src/components/TabPages文件夹到自己的项目当中
+2. scr/layouts/BasicLayout.js中引入该组件
+3. 
+
+  ```html
+   <Content>
+     {children} //注释此行,改为tab组件
+     <TabPages {...this.props} homePageKey='/dashboard/home' errorPage={<NoAuth />} />
+  </Content>				// homePageKey就是项目首页的url地址
+
+  ```
+
+  
+
+
 <div align="center">
 
 

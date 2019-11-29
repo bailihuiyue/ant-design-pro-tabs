@@ -30,6 +30,8 @@
 
   ######          ~~3. 目前redirect到默认页面后,默认标签不高亮~~
 
+  ######           4. pro4.0中二级菜单还没有完全测试,可能会有bug,如有问题请反馈,谢谢
+
 使用方法: 
 
 #### 注意:
@@ -48,7 +50,7 @@
 
 1. 复制src/components/TabPages文件夹到自己的项目当中
 2. scr/layouts/BasicLayout.js中引入该组件
-3. 
+3.  
 
   ```html
    <Content>
@@ -58,18 +60,19 @@
 
   ```
 
-  4.由于ant-pro 4.0版本已使用区块功能,所以/dashboard/home路由已经不存在,请将上述代码的
+4. 由于ant-pro 4.0版本已使用区块功能,所以/dashboard/home路由已经不存在,请将上述代码的
 
 ```javascript
 homePageKey='/dashboard/home'改为 homePageKey='/welcome' errorPage={<请自行修改 />}
 ```
 
-5.多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
+5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 
-6.在4.0版本中使用该组件样式会有些许bug,请自行修改吧,我试了一下,不算麻烦
+6. 在4.0版本中使用该组件样式会有些许bug,请自行修改吧,我试了一下,不算麻烦
 
-7.有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
+7. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
 
+   
 
 
 开箱即用的中台前端/设计解决方案。

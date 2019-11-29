@@ -6,7 +6,7 @@
 
 - ###### 参考过多个github网友ui设计以及自己的多次改版,历时两周,最终完成
 
-- ###### 基于最新版ant-design-pro 2.3.0 (2019/3/28)
+- ###### 基于最新版ant-design-pro 2.3.0 (现已支持4.0版本,样式会有些问题,请自行调节)
 
 - ###### 原汁原味,只添加了tab,其他均无修改
 
@@ -16,7 +16,7 @@
 
 - ###### 利用sessionStorage,刷新页面仍显可以显示之前未关闭的标签,重新打开浏览器只会显示路由所在的标签
 
-- ###### 刷新页面会提示信息无法被保存
+- ###### 刷新页面会提示信息无法被保存(可在window.onbeforeunload中修改,删除此行就可以屏蔽该功能)
 
 - ###### 样式方面参考了:https://github.com/kuhami/react-ant
 
@@ -44,10 +44,22 @@
 
   ```
 
-  
+  4.由于ant-pro 4.0版本已使用区块功能,所以/dashboard/home路由已经不存在,请将上述代码的
+
+```javascript
+homePageKey='/dashboard/home'改为 homePageKey='/welcome' errorPage={<请自行修改 />}
+```
+
+5.多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
+
+6.在4.0版本中使用该组件样式会有些许bug,请自行修改吧,我试了一下,不算麻烦
+
+7.有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
 
 
-<div align="center">
+
+
+
 
 
 开箱即用的中台前端/设计解决方案。

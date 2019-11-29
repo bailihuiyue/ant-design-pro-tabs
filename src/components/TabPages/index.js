@@ -114,10 +114,11 @@ class TabPages extends PureComponent {
             children,
             location: { pathname },
             menuData,
-            errorPage
+            errorPage,
+            route: { routes },
         } = props;
         const { tabList, stateTabLists } = this.state;
-        const tabLists = stateTabLists || this.updateTreeList(menuData);
+        const tabLists = stateTabLists || this.updateTreeList(menuData || routes);
         const listObj = { ...tabList };
         let path = pathname;
         // 该路由存在,但是tabs并没有

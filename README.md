@@ -32,6 +32,20 @@
 
 使用方法: 
 
+#### 注意:
+
+4.0版本formatMessage引入位置可能变化
+
+```javascript
+2.0: import { formatMessage } from 'umi/locale';
+```
+
+```javascript
+4.0: import { formatMessage } from 'umi-plugin-react/locale'; 不修改的话可能会导致国际化有问题
+```
+
+
+
 1. 复制src/components/TabPages文件夹到自己的项目当中
 2. scr/layouts/BasicLayout.js中引入该组件
 3. 
@@ -55,10 +69,6 @@ homePageKey='/dashboard/home'改为 homePageKey='/welcome' errorPage={<请自行
 6.在4.0版本中使用该组件样式会有些许bug,请自行修改吧,我试了一下,不算麻烦
 
 7.有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
-
-
-
-
 
 
 

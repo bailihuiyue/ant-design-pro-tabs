@@ -1,4 +1,4 @@
-# Ant Design Pro
+# Ant Design Pro Tabs 
 
 ### 大家想要的,带有tab标签的ant design pro 又叕来啦!!!
 
@@ -30,6 +30,10 @@
 
   ######          如有其他问题请反馈,谢谢
 
+- ####  注意:
+  ######          由于框架原因,所有路由都是先走/然后跳转,所以每次tab也都会有一个/,显示为menu.,目前的方法是把这个标签display:none了
+  
+
 使用方法: 
 
 1. 复制src/components/TabPages文件夹到自己的项目当中
@@ -38,7 +42,7 @@
 
   ```html
     <Authorized authority={authorized.authority} noMatch={noMatch}>
-      <TabPages {...props} homePageKey='/form/basic-form' errorPage={noMatch} maxTab="5"> // maxTab="5"作用:标签开多了可能导致浏览器崩溃,设置一个最大数量,超出会提示
+      <TabPages {...props} homePageKey='/form/basic-form' errorPage={noMatch} maxTab="5" homePage="/dashboard/analysis"> // maxTab="5"作用:标签开多了可能导致浏览器崩溃,设置一个最大数量,超出会提示
         {children}
       </TabPages>
     </Authorized> // homePageKey就是项目首页的url地址
@@ -53,59 +57,3 @@ homePageKey='/dashboard/home'改为 homePageKey='/welcome' errorPage={<请自行
 5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 
 6. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
-
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
-
-## Environment Prepare
-
-Install `node_modules`:
-
-```bash
-npm install
-```
-
-or
-
-```bash
-yarn
-```
-
-## Provided Scripts
-
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
-npm run build
-```
-
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).

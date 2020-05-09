@@ -8,14 +8,14 @@ const { TabPane } = Tabs;
 
 const errorTabKey = 'errorPage';
 
-const TabPages = (props) => {
+const TabPages = props => {
   const [tabList, setTabList] = useState({});
   const [activeKey, setActiveKey] = useState('');
   const [needGoback, setNeedGoback] = useState(false);
   const [allRoutes, setAllRoutes] = useState(false);
   const intl = useIntl();
   //   判断一个数组或者object是否为空
-  const hasVal = (val) => {
+  const hasVal = val => {
     if (!val) {
       return false;
     }
@@ -32,11 +32,11 @@ const TabPages = (props) => {
     }
   };
 
-  const getAllrouters = (data) => {
+  const getAllrouters = data => {
     const treeData = data;
     const treeList = [];
-    const getTreeList = (tree) => {
-      tree.forEach((node) => {
+    const getTreeList = tree => {
+      tree.forEach(node => {
         if (!node.level) {
           Object.assign(treeList, {
             [node.path]: {
@@ -57,7 +57,7 @@ const TabPages = (props) => {
     return treeList;
   };
 
-  const renderTabs = (unClosedTabs) => {
+  const renderTabs = unClosedTabs => {
     const {
       location: { pathname },
       route: { routes },
@@ -98,7 +98,7 @@ const TabPages = (props) => {
         hasSet = true;
       } else {
         // 把标签放入一个对象,当前的path塞进页面内容
-        unClosedTabs.forEach((key) => {
+        unClosedTabs.forEach(key => {
           Object.assign(currentTabPages, {
             [key]: {
               key,
@@ -140,12 +140,12 @@ const TabPages = (props) => {
     }
   };
 
-  const onChange = (key) => {
+  const onChange = key => {
     setActiveKey(key);
     history.push(key);
   };
 
-  const remove = (targetKey) => {
+  const remove = targetKey => {
     let activeKeyTemp = null;
     const tabListObj = { ...tabList };
     const tabKeys = Object.keys(tabList);
@@ -211,7 +211,7 @@ const TabPages = (props) => {
       type="editable-card"
       onEdit={onEdit}
     >
-      {Object.keys(tabList).map((item) => {
+      {Object.keys(tabList).map(item => {
         const { tab, key, content } = tabList[item];
         return (
           <TabPane tab={tab} key={key} closable={Object.keys(tabList).length !== 1}>

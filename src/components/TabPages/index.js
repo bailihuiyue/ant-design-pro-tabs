@@ -211,10 +211,12 @@ const TabPages = props => {
       type="editable-card"
       onEdit={onEdit}
     >
-      {Object.keys(tabList).map(item => {
+      {Object.keys(tabList).map((item,i) => {
         const { tab, key, content } = tabList[item];
+        const tabs = Object.keys(tabList);
+        const disableClose = tabs.includes("/") && tabs.length === 2 && i===1;
         return (
-          <TabPane tab={tab} key={key} closable={Object.keys(tabList).length !== 1}>
+          <TabPane tab={tab} key={key} closable={!disableClose}>
             {content}
           </TabPane>
         );

@@ -28,13 +28,15 @@
 
   ######          3.输入错误的路由时逻辑还有点小问题,待修复
 
+  ######          4.页签限制功能(maxTab),计算有时不准,待修复
+
   ######          如有其他问题请反馈,谢谢
 
 - ####  注意:
   ######          由于框架原因,所有路由都是先走/然后跳转,所以每次tab也都会有一个/,显示为menu.,目前的方法是把这个标签display:none了
   
 
-使用方法: 
+pro 4.0 使用方法: 
 
 1. 复制src/components/TabPages文件夹到自己的项目当中
 2. src/layouts/BasicLayout.js中引入该组件
@@ -48,11 +50,15 @@
     </Authorized> // homePageKey就是项目首页的url地址
   ```
 
-4. 由于ant-pro 4.0版本已使用区块功能,所以/dashboard/home路由已经不存在,请将上述代码的
+4.pro 2.0版本
 
-```javascript
-homePageKey='/dashboard/home'改为 homePageKey='/welcome' errorPage={<请自行修改 />}
-```
+  ```html
+   <Content>
+     {children} //注释此行,改为tab组件
+     <TabPages {...this.props} homePageKey='/dashboard/home' errorPage={<NoAuth />} />
+  </Content>				// homePageKey就是项目首页的url地址
+
+  ```
 
 5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 

@@ -1,12 +1,10 @@
-[English](./README.en-US.md) | 简体中文 | [Русский](./README.ru-RU.md) | [Türkçe](./README.tr-TR.md)
+# Ant Design Pro
 
-<h1 align="center">Ant Design Pro Tabs</h1>
+### 大家想要的,带有tab标签的ant design pro 又叕来啦!!!
 
-### 大家想要的,带有tab标签的ant design pro终于来啦!!!
+- ###### 代码已经重写,使用hooks进行开发,精力有限,只出了js版本,需要ts的同学把类型改成any就好了(手动捂脸)
 
-- ###### 参考过多个github网友ui设计以及自己的多次改版,历时两周,最终完成
-
-- ###### 基于最新版ant-design-pro 2.3.0 (现已支持4.0版本,样式会有些问题,请自行调节)
+- ###### 基于最新版ant-design-pro 4.0 (仍然保留2.3.0包版本组件,TabPages/old.js就是了)
 
 - ###### 原汁原味,只添加了tab,其他均无修改
 
@@ -26,38 +24,24 @@
 
 - ###### BUG:1. 通过路由传参会找不到页面,从而报错
 
-  ######          ~~2. 使用tab后路由redirect失效(目前已经在TabPages写死代码解决问题)~~
+  ######          2.由于pro4.0没有menuData传进来,渲染全靠props.routes渲染,所以国际化可能会有点问题,导致路由路径必须和国际化一直,比如路径是a/b/c,那么国际化必须写成menu:{a:{b:{c:"xxxxx"}}},否则会tab可能会显示不正常
 
-  ######          ~~3. 目前redirect到默认页面后,默认标签不高亮~~
+  ######          3.输入错误的路由时逻辑还有点小问题,待修复
 
-  ######           4. pro4.0中二级菜单还没有完全测试,可能会有bug,如有问题请反馈,谢谢
+  ######          如有其他问题请反馈,谢谢
 
 使用方法: 
 
-#### 注意:
-
-4.0版本formatMessage引入位置可能变化
-
-```javascript
-2.0: import { formatMessage } from 'umi/locale';
-```
-
-```javascript
-4.0: import { formatMessage } from 'umi-plugin-react/locale'; 不修改的话可能会导致国际化有问题
-```
-
-
-
 1. 复制src/components/TabPages文件夹到自己的项目当中
-2. scr/layouts/BasicLayout.js中引入该组件
+2. src/layouts/BasicLayout.js中引入该组件
 3.  
 
   ```html
-   <Content>
-     {children} //注释此行,改为tab组件
-     <TabPages {...this.props} homePageKey='/dashboard/home' errorPage={<NoAuth />} />
-  </Content>				// homePageKey就是项目首页的url地址
-
+    <Authorized authority={authorized.authority} noMatch={noMatch}>
+      <TabPages {...props} homePageKey='/form/basic-form' errorPage={noMatch} maxTab="5"> // maxTab="5"作用:标签开多了可能导致浏览器崩溃,设置一个最大数量,超出会提示
+        {children}
+      </TabPages>
+    </Authorized> // homePageKey就是项目首页的url地址
   ```
 
 4. 由于ant-pro 4.0版本已使用区块功能,所以/dashboard/home路由已经不存在,请将上述代码的
@@ -68,125 +52,60 @@ homePageKey='/dashboard/home'改为 homePageKey='/welcome' errorPage={<请自行
 
 5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 
-6. 在4.0版本中使用该组件样式会有些许bug,请自行修改吧,我试了一下,不算麻烦
+6. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
 
-7. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
+This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
-   
+## Environment Prepare
 
-
-开箱即用的中台前端/设计解决方案。
-
-[![Build With Umi](https://img.shields.io/badge/build%20with-umi-028fe4.svg?style=flat-square)](http://umijs.org/)
-[![Build Status](https://dev.azure.com/ant-design/ant-design-pro/_apis/build/status/ant-design.ant-design-pro?branchName=master)](https://dev.azure.com/ant-design/ant-design-pro/_build/latest?definitionId=1?branchName=master)
-[![Dependencies](https://img.shields.io/david/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro)
-[![DevDependencies](https://img.shields.io/david/dev/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro?type=dev)
-[![Join the chat at https://gitter.im/ant-design/ant-design-pro](https://img.shields.io/gitter/room/ant-design/ant-design-pro.svg?style=flat-square&logoWidth=20&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAzMCAyMCI%2BDQo8ZGVmcz4NCjxwYXRoIGlkPSJzIiBkPSJNMCwtMSAwLjU4Nzc4NSwwLjgwOTAxNyAtMC45NTEwNTcsLTAuMzA5MDE3SDAuOTUxMDU3TC0wLjU4Nzc4NSwwLjgwOTAxN3oiIGZpbGw9IiNmZmRlMDAiLz4NCjwvZGVmcz4NCjxyZWN0IHdpZHRoPSIzMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2RlMjkxMCIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNSw1KSBzY2FsZSgzKSIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAsMikgcm90YXRlKDIzLjAzNjI0MykiLz4NCjx1c2UgeGxpbms6aHJlZj0iI3MiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyLDQpIHJvdGF0ZSg0NS44Njk4OTgpIi8%2BDQo8dXNlIHhsaW5rOmhyZWY9IiNzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMiw3KSByb3RhdGUoNjkuOTQ1Mzk2KSIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAsOSkgcm90YXRlKDIwLjY1OTgwOCkiLz4NCjwvc3ZnPg%3D%3D)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
-![index](./doc/index.png)
-
-</div>
-
-- 预览：http://preview.pro.ant.design
-- 首页：http://pro.ant.design/index-cn
-- 使用文档：http://pro.ant.design/docs/getting-started-cn
-- 更新日志: http://pro.ant.design/docs/changelog-cn
-- 常见问题：http://pro.ant.design/docs/faq-cn
-- 国内镜像：http://ant-design-pro.gitee.io
-
-## 特性
-
-- :gem: **优雅美观**：基于 Ant Design 体系精心设计
-- :triangular_ruler: **常见设计模式**：提炼自中后台应用的典型页面和场景
-- :rocket: **最新技术栈**：使用 React/umi/dva/antd 等前端前沿技术开发
-- :iphone: **响应式**：针对不同屏幕大小设计
-- :art: **主题**：可配置的主题满足多样化的品牌诉求
-- :globe_with_meridians: **国际化**：内建业界通用的国际化方案
-- :gear: **最佳实践**：良好的工程实践助您持续产出高质量代码
-- :1234: **Mock 数据**：实用的本地数据调试方案
-- :white_check_mark: **UI 测试**：自动化测试保障前端产品质量
-
-## 模板
-
-```
-- Dashboard
-  - 分析页
-  - 监控页
-  - 工作台
-- 表单页
-  - 基础表单页
-  - 分步表单页
-  - 高级表单页
-- 列表页
-  - 查询表格
-  - 标准列表
-  - 卡片列表
-  - 搜索列表（项目/应用/文章）
-- 详情页
-  - 基础详情页
-  - 高级详情页
-- 用户
-  - 用户中心页
-  - 用户设置页
-- 结果
-  - 成功页
-  - 失败页
-- 异常
-  - 403 无权限
-  - 404 找不到
-  - 500 服务器出错
-- 帐户
-  - 登录
-  - 注册
-  - 注册成功
-```
-
-## 使用
-
-### 使用命令行
-```bash
-$ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
-$ cd ant-design-pro
-$ npm install
-$ npm start         # 访问 http://localhost:8000
-```
-
-### 使用 docker
+Install `node_modules`:
 
 ```bash
-# preview 
-$ docker pull antdesign/ant-design-pro
-$ docker run -p 80:80 antdesign/ant-design-pro
-# open http://localhost
-
-# dev 
-$ npm run docker:dev
-
-# build 
-$ npm run docker:build
-
-
-# production dev 
-$ npm run docker-prod:dev
-
-// production build 
-$ npm run docker-prod:build
+npm install
 ```
 
-更多信息请参考 [使用文档](http://pro.ant.design/docs/getting-started)。
+or
 
-## 支持环境
+```bash
+yarn
+```
 
-现代浏览器及 IE11。
+## Provided Scripts
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --------- | --------- | --------- | --------- | --------- |
-| IE11, Edge| last 2 versions| last 2 versions| last 2 versions| last 2 versions
+Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
 
-## 参与贡献
+Scripts provided in `package.json`. It's safe to modify or add additional script:
 
-我们非常欢迎你的贡献，你可以通过以下方式和我们一起共建 :smiley:：
+### Start project
 
-- 在你的公司或个人项目中使用 Ant Design Pro。
-- 通过 [Issue](http://github.com/ant-design/ant-design-pro/issues) 报告 bug 或进行咨询。
-- 提交 [Pull Request](http://github.com/ant-design/ant-design-pro/pulls) 改进 Pro 的代码。
+```bash
+npm start
+```
+
+### Build project
+
+```bash
+npm run build
+```
+
+### Check code style
+
+```bash
+npm run lint
+```
+
+You can also use script to auto fix some lint error:
+
+```bash
+npm run lint:fix
+```
+
+### Test code
+
+```bash
+npm test
+```
+
+## More
+
+You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).

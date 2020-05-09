@@ -1,4 +1,7 @@
-// 代码中会兼容本地 service mock 以及部署站点的静态数据
+function getFakeCaptcha(req, res) {
+  return res.json('captcha-xxx');
+} // 代码中会兼容本地 service mock 以及部署站点的静态数据
+
 export default {
   // 支持值为 Object 和 Array
   'GET /api/currentUser': {
@@ -74,6 +77,7 @@ export default {
   ],
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
+
     if (password === 'ant.design' && userName === 'admin') {
       res.send({
         status: 'ok',
@@ -82,6 +86,7 @@ export default {
       });
       return;
     }
+
     if (password === 'ant.design' && userName === 'user') {
       res.send({
         status: 'ok',
@@ -90,6 +95,16 @@ export default {
       });
       return;
     }
+
+    if (type === 'mobile') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'admin',
+      });
+      return;
+    }
+
     res.send({
       status: 'error',
       type,
@@ -97,7 +112,10 @@ export default {
     });
   },
   'POST /api/register': (req, res) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
+    res.send({
+      status: 'ok',
+      currentAuthority: 'user',
+    });
   },
   'GET /api/500': (req, res) => {
     res.status(500).send({
@@ -135,4 +153,5 @@ export default {
       path: '/base/category/list',
     });
   },
+  'GET  /api/login/captcha': getFakeCaptcha,
 };

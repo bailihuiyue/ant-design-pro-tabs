@@ -1,37 +1,22 @@
-import analysis from './zh-CN/analysis';
-import exception from './zh-CN/exception';
-import form from './zh-CN/form';
+import component from './zh-CN/component';
 import globalHeader from './zh-CN/globalHeader';
-import login from './zh-CN/login';
 import menu from './zh-CN/menu';
-import monitor from './zh-CN/monitor';
-import result from './zh-CN/result';
+import pwa from './zh-CN/pwa';
 import settingDrawer from './zh-CN/settingDrawer';
 import settings from './zh-CN/settings';
-import pwa from './zh-CN/pwa';
-import component from './zh-CN/component';
-import editor from './zh-CN/editor';
 
 export default {
   'navBar.lang': '语言',
   'layout.user.link.help': '帮助',
   'layout.user.link.privacy': '隐私',
   'layout.user.link.terms': '条款',
-  'app.home.introduce': '介绍',
-  'app.forms.basic.title': '基础表单',
-  'app.forms.basic.description':
-    '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
-  ...analysis,
-  ...exception,
-  ...form,
+  'app.preview.down.block': '下载此页面到本地项目',
+  'app.welcome.link.fetch-blocks': '获取全部区块',
+  'app.welcome.link.block-list': '基于 block 开发，快速构建标准页面',
   ...globalHeader,
-  ...login,
   ...menu,
-  ...monitor,
-  ...result,
   ...settingDrawer,
   ...settings,
   ...pwa,
   ...component,
-  ...editor,
 };

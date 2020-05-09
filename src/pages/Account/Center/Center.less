@@ -1,5 +1,4 @@
-@import '~antd/lib/style/themes/default.less';
-@import '~@/utils/utils.less';
+@import '~antd/es/style/themes/default.less';
 
 .avatarHolder {
   margin-bottom: 24px;
@@ -37,19 +36,6 @@
     left: 0;
     width: 14px;
     height: 14px;
-    background: url(https://gw.alipayobjects.com/zos/rmsportal/pBjWzVAHnOOtAUvZmZfy.svg);
-
-    &.title {
-      background-position: 0 0;
-    }
-
-    &.group {
-      background-position: 0 -22px;
-    }
-
-    &.address {
-      background-position: 0 -44px;
-    }
   }
 }
 
@@ -78,9 +64,12 @@
   a {
     display: block;
     margin-bottom: 24px;
+    overflow: hidden;
     color: @text-color;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
     transition: color 0.3s;
-    .textOverflow();
 
     &:hover {
       color: @primary-color;

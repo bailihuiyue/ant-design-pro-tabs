@@ -1,13 +1,10 @@
-import { query as queryUsers, queryCurrent } from '@/services/user';
+import { queryCurrent, query as queryUsers } from '@/services/user';
 
-export default {
+const UserModel = {
   namespace: 'user',
-
   state: {
-    list: [],
     currentUser: {},
   },
-
   effects: {
     *fetch(_, { call, put }) {
       const response = yield call(queryUsers);
@@ -16,6 +13,7 @@ export default {
         payload: response,
       });
     },
+
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
       yield put({
@@ -24,21 +22,17 @@ export default {
       });
     },
   },
-
   reducers: {
-    save(state, action) {
-      return {
-        ...state,
-        list: action.payload,
-      };
-    },
     saveCurrentUser(state, action) {
-      return {
-        ...state,
-        currentUser: action.payload || {},
-      };
+      return { ...state, currentUser: action.payload || {} };
     },
-    changeNotifyCount(state, action) {
+
+    changeNotifyCount(
+      state = {
+        currentUser: {},
+      },
+      action,
+    ) {
       return {
         ...state,
         currentUser: {
@@ -50,3 +44,4 @@ export default {
     },
   },
 };
+export default UserModel;

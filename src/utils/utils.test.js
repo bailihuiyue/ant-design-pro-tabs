@@ -1,28 +1,4 @@
-import { fixedZero, isUrl } from './utils';
-
-describe('fixedZero tests', () => {
-  it('should not pad large numbers', () => {
-    expect(fixedZero(10)).toEqual(10);
-    expect(fixedZero(11)).toEqual(11);
-    expect(fixedZero(15)).toEqual(15);
-    expect(fixedZero(20)).toEqual(20);
-    expect(fixedZero(100)).toEqual(100);
-    expect(fixedZero(1000)).toEqual(1000);
-  });
-
-  it('should pad single digit numbers and return them as string', () => {
-    expect(fixedZero(0)).toEqual('00');
-    expect(fixedZero(1)).toEqual('01');
-    expect(fixedZero(2)).toEqual('02');
-    expect(fixedZero(3)).toEqual('03');
-    expect(fixedZero(4)).toEqual('04');
-    expect(fixedZero(5)).toEqual('05');
-    expect(fixedZero(6)).toEqual('06');
-    expect(fixedZero(7)).toEqual('07');
-    expect(fixedZero(8)).toEqual('08');
-    expect(fixedZero(9)).toEqual('09');
-  });
-});
+import { isUrl, getRouteAuthority } from './utils';
 
 describe('isUrl tests', () => {
   it('should return false for invalid and corner case inputs', () => {
@@ -33,10 +9,8 @@ describe('isUrl tests', () => {
     expect(isUrl(NaN)).toBeFalsy();
     expect(isUrl(null)).toBeFalsy();
     expect(isUrl(undefined)).toBeFalsy();
-    expect(isUrl()).toBeFalsy();
     expect(isUrl('')).toBeFalsy();
   });
-
   it('should return false for invalid URLs', () => {
     expect(isUrl('foo')).toBeFalsy();
     expect(isUrl('bar')).toBeFalsy();
@@ -44,7 +18,6 @@ describe('isUrl tests', () => {
     expect(isUrl('http:/example.com/')).toBeFalsy();
     expect(isUrl('ttp://example.com/')).toBeFalsy();
   });
-
   it('should return true for valid URLs', () => {
     expect(isUrl('http://example.com/')).toBeTruthy();
     expect(isUrl('https://example.com/')).toBeTruthy();
@@ -58,5 +31,86 @@ describe('isUrl tests', () => {
     expect(isUrl('https://www.example.com/test/123')).toBeTruthy();
     expect(isUrl('http://www.example.com/test/123?foo=bar')).toBeTruthy();
     expect(isUrl('https://www.example.com/test/123?foo=bar')).toBeTruthy();
+  });
+});
+describe('getRouteAuthority tests', () => {
+  it('should return authority for each route', () => {
+    const routes = [
+      {
+        path: '/user',
+        name: 'user',
+        authority: ['user'],
+        exact: true,
+      },
+      {
+        path: '/admin',
+        name: 'admin',
+        authority: ['admin'],
+        exact: true,
+      },
+    ];
+    expect(getRouteAuthority('/user', routes)).toEqual(['user']);
+    expect(getRouteAuthority('/admin', routes)).toEqual(['admin']);
+  });
+  it('should return inherited authority for unconfigured route', () => {
+    const routes = [
+      {
+        path: '/nested',
+        authority: ['admin', 'user'],
+        exact: true,
+      },
+      {
+        path: '/nested/user',
+        name: 'user',
+        exact: true,
+      },
+    ];
+    expect(getRouteAuthority('/nested/user', routes)).toEqual(['admin', 'user']);
+  });
+  it('should return authority for configured route', () => {
+    const routes = [
+      {
+        path: '/nested',
+        authority: ['admin', 'user'],
+        exact: true,
+      },
+      {
+        path: '/nested/user',
+        name: 'user',
+        authority: ['user'],
+        exact: true,
+      },
+      {
+        path: '/nested/admin',
+        name: 'admin',
+        authority: ['admin'],
+        exact: true,
+      },
+    ];
+    expect(getRouteAuthority('/nested/user', routes)).toEqual(['user']);
+    expect(getRouteAuthority('/nested/admin', routes)).toEqual(['admin']);
+  });
+  it('should return authority for substring route', () => {
+    const routes = [
+      {
+        path: '/nested',
+        authority: ['user', 'users'],
+        exact: true,
+      },
+      {
+        path: '/nested/users',
+        name: 'users',
+        authority: ['users'],
+        exact: true,
+      },
+      {
+        path: '/nested/user',
+        name: 'user',
+        authority: ['user'],
+        exact: true,
+      },
+    ];
+    expect(getRouteAuthority('/nested/user', routes)).toEqual(['user']);
+    expect(getRouteAuthority('/nested/users', routes)).toEqual(['users']);
   });
 });

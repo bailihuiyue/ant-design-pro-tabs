@@ -25,8 +25,7 @@ package-lock.json
 # visual studio code
 .history
 *.log
-
-functions/mock
+functions/*
 .temp/**
 
 # umi
@@ -36,3 +35,6 @@ functions/mock
 # screenshot
 screenshot
 .firebase
+.eslintcache
+
+build

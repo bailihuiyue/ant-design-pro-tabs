@@ -4,6 +4,7 @@ import { Tabs, message } from 'antd';
 import storage from 'good-storage';
 import _ from 'lodash';
 import styles from './page.less';
+
 const { TabPane } = Tabs;
 
 const errorTabKey = 'errorPage';
@@ -116,7 +117,8 @@ const TabPages = props => {
       const limit = Number(maxTab);
       // 新增标签的情况限制一下标签数量    // 性能限制开多了会崩溃,可以限制个数
       if (!currentTabPages[pathname] && limit && Object.keys(tabList).length >= limit) {
-        setNeedGoback(true);
+        message.error(`最大打开${props.maxTab}个标签页,请关闭一些再打开新标签`);
+        history.goBack();
         return false;
       }
       if (!currentTabPages[pathname]?.content) {
@@ -191,13 +193,13 @@ const TabPages = props => {
   useEffect(() => {
     renderTabs();
   }, [props.location]);
-  useEffect(() => {
-    if (needGoback) {
-      message.error(`最大打开${props.maxTab}个标签页,请关闭一些再打开新标签`);
-      history.goBack();
-      setNeedGoback(false);
-    }
-  }, [needGoback]);
+  // useEffect(() => {
+  //   if (needGoback) {
+  //     message.error(`最大打开${props.maxTab}个标签页,请关闭一些再打开新标签`);
+  //     history.goBack();
+  //     setNeedGoback(false);
+  //   }
+  // }, [needGoback]);
 
   return (
     <Tabs

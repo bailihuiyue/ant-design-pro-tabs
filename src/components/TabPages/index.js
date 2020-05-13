@@ -7,16 +7,16 @@ import styles from './page.less';
 
 const { TabPane } = Tabs;
 
-const errorTabKey = 'errorPage';
+// const errorTabKey = 'errorPage';
 
-const TabPages = props => {
+const TabPages = (props) => {
   const [tabList, setTabList] = useState({});
   const [activeKey, setActiveKey] = useState('');
-  const [needGoback, setNeedGoback] = useState(false);
+  // const [needGoback, setNeedGoback] = useState(false);
   const [allRoutes, setAllRoutes] = useState(false);
   const intl = useIntl();
   //   判断一个数组或者object是否为空
-  const hasVal = val => {
+  const hasVal = (val) => {
     if (!val) {
       return false;
     }
@@ -33,11 +33,11 @@ const TabPages = props => {
     }
   };
 
-  const getAllrouters = data => {
+  const getAllrouters = (data) => {
     const treeData = data;
     const treeList = [];
-    const getTreeList = tree => {
-      tree.forEach(node => {
+    const getTreeList = (tree) => {
+      tree.forEach((node) => {
         if (!node.level) {
           Object.assign(treeList, {
             [node.path]: {
@@ -58,7 +58,16 @@ const TabPages = props => {
     return treeList;
   };
 
-  const renderTabs = unClosedTabs => {
+  const setStates = (currentTabPages, pathname, session) => {
+    // 塞进所有标签到state
+    currentTabPages && setTabList(currentTabPages);
+    // 设置tab激活页面为当前路由
+    pathname && setActiveKey(pathname);
+    // 将已打开tab存到session中,防止页面刷新
+    session && storage.session.set('AntTabs', Object.keys(currentTabPages));
+  };
+
+  const renderTabs = (unClosedTabs) => {
     const {
       location: { pathname },
       route: { routes },
@@ -68,7 +77,6 @@ const TabPages = props => {
     } = props;
 
     let currentTabPages = {};
-    let hasSet = false;
     // 输入错误路由
     const tempRoutes = allRoutes || Object.keys(getAllrouters(routes));
     if (!tempRoutes.includes(pathname)) {
@@ -80,10 +88,9 @@ const TabPages = props => {
           content: errorPage,
         },
       });
-      hasSet = true;
-
-      // 有unClosedTabs说明是页面初始化
+      setStates(currentTabPages, pathname);
     }
+    // 有unClosedTabs说明是页面初始化
     if (unClosedTabs) {
       // 先判断local存的数据是否是异常
       // 应对异常情况,比如local里存了/a/b,路由是/z/x
@@ -96,10 +103,10 @@ const TabPages = props => {
             content: children,
           },
         });
-        hasSet = true;
+        setStates(currentTabPages, pathname, true);
       } else {
         // 把标签放入一个对象,当前的path塞进页面内容
-        unClosedTabs.forEach(key => {
+        unClosedTabs.forEach((key) => {
           Object.assign(currentTabPages, {
             [key]: {
               key,
@@ -108,8 +115,8 @@ const TabPages = props => {
             },
           });
         });
+        setStates(currentTabPages, pathname, true);
       }
-      hasSet = true;
     } else if (hasVal(tabList)) {
       // 新增,切换tab的情况
       // 先将原tab复制一遍,以防额外的影响
@@ -122,32 +129,32 @@ const TabPages = props => {
         return false;
       }
       if (!currentTabPages[pathname]?.content) {
-        // 如果已经有content了,就不要再重复添加了,应对切换tab的情况
+        // 如果么有content或者标签不存在,再添加
         currentTabPages[pathname] = {
           key: pathname,
           tab: transforPathToTxt(pathname),
           content: children,
         };
+        setStates(currentTabPages, pathname, currentTabPages);
       }
-      hasSet = true;
-    }
-
-    // 没走上面的if selse,也不需要setState了
-    if (hasSet) {
-      // 塞进所有标签到state
-      setTabList(currentTabPages);
-      // 设置tab激活页面为当前路由
-      setActiveKey(pathname);
-      storage.session.set('AntTabs', Object.keys(currentTabPages));
     }
   };
 
-  const onChange = key => {
+  const needRouterPush = (key) => {
+    const openedTabs = Object.keys(tabList);
+    if (openedTabs.includes(key) && tabList[key]?.content) {
+      return false;
+    }
+    return true;
+  };
+
+  const onChange = (key) => {
     setActiveKey(key);
     history.push(key);
+    // needRouterPush(key) && history.push(key);
   };
 
-  const remove = targetKey => {
+  const remove = (targetKey) => {
     let activeKeyTemp = null;
     const tabListObj = { ...tabList };
     const tabKeys = Object.keys(tabList);
@@ -213,10 +220,10 @@ const TabPages = props => {
       type="editable-card"
       onEdit={onEdit}
     >
-      {Object.keys(tabList).map((item,i) => {
+      {Object.keys(tabList).map((item, i) => {
         const { tab, key, content } = tabList[item];
         const tabs = Object.keys(tabList);
-        const disableClose = tabs.includes("/") && tabs.length === 2 && i===1;
+        const disableClose = tabs.includes('/') && tabs.length === 2 && i === 1;
         return (
           <TabPane tab={tab} key={key} closable={!disableClose}>
             {content}

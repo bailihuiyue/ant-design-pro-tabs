@@ -25,7 +25,7 @@
 - ###### BUG:
   ######          1. 通过路由传参会找不到页面,从而报错
 
-  ######          2.~~由于pro4.0没有menuData传进来,渲染全靠props.routes渲染,所以国际化可能会有点问题,导致路由路径必须和国际化一直,比如路径是a/b/c,那么国际化必须写成menu:{a:{b:{c:"xxxxx"}}},否则会tab可能会显示不正常~~
+  ######          2.由于pro4.0没有menuData传进来,渲染全靠props.routes渲染,所以国际化可能会有点问题,导致路由路径必须和国际化一直,比如路径是a/b/c,那么国际化必须写成menu:{a:{b:{c:"xxxxx"}}},否则会tab可能会显示不正常
 
   ######          3.输入错误的路由时逻辑还有点小问题,待修复
 
@@ -64,5 +64,5 @@ pro 4.0 使用方法:
 5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 6. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
 
-<img src="./money.png" width="200px"> 
+<img src="https://github.com/bailihuiyue/ant-design-pro-tabs/raw/master/money.png" width="200px"> 
 <div>一块两块不嫌少,一百两百不嫌多^_^

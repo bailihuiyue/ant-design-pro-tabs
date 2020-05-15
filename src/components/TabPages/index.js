@@ -79,38 +79,40 @@ const TabPages = (props) => {
     // 输入错误路由
     if (!allRouterkeys.includes(pathname)) {
       message.error(`错误: ${pathname}不存在!`);
-      tabList[pathname] = {
-        key: pathname,
+      tabList[errorPage] = {
+        key: errorPage,
         tab: '错误',
-        content: errorPage,
+        content: allRouterData[errorPage].content,
         exact: true,
       };
       setStates(tabList, pathname);
+      history.push(errorPage)
+      return false;
     }
     // 有unClosedTabs说明是页面初始化
     if (unClosedTabs) {
       // 先判断local存的数据是否是异常
       // 应对异常情况,比如local里存了/a/b,路由是/z/x
-      if (!unClosedTabs.includes(realPathName)) {
-        storage.session.set('AntTabs', [realPathName]);
-        tabList[realPathName] = {
-          key: realPathName,
-          tab: transforPathToTxt(realPathName),
-          content: allRouterData[realPathName].content,
-          exact: allRouterData[realPathName].exact,
+      if (!unClosedTabs.includes(pathname)) {
+        storage.session.set('AntTabs', [pathname]);
+        tabList[pathname] = {
+          key: pathname,
+          tab: transforPathToTxt(pathname),
+          content: allRouterData[pathname].content,
+          exact: allRouterData[pathname].exact,
         };
-        setStates(tabList, realPathName, true);
+        setStates(tabList, pathname, true);
       } else {
         // 把标签放入一个对象,当前的path塞进页面内容
         unClosedTabs.forEach((key) => {
           tabList[key] = {
             key,
             tab: transforPathToTxt(key),
-            content: realPathName === key ? allRouterData[realPathName].content : null,
-            exact: allRouterData[realPathName].exact,
+            content: pathname === key ? allRouterData[pathname]?.content : null,
+            exact: allRouterData[pathname]?.exact,
           };
         });
-        setStates(tabList, realPathName, true);
+        setStates(tabList, pathname, true);
       }
     } else if (hasVal(tabList)) {
       // 新增,切换tab的情况
@@ -121,18 +123,18 @@ const TabPages = (props) => {
         history.goBack();
         return false;
       }
-      if (!tabList[realPathName]?.content) {
+      if (!tabList[pathname]?.content) {
         // 如果么有content或者标签不存在,再添加
-        tabList[realPathName] = {
-          key: realPathName,
-          tab: transforPathToTxt(realPathName),
-          content: allRouterData[realPathName].content,
-          exact: allRouterData[realPathName].exact,
+        tabList[pathname] = {
+          key: pathname,
+          tab: transforPathToTxt(pathname),
+          content: allRouterData[pathname].content,
+          exact: allRouterData[pathname].exact,
         };
-        setStates(tabList, realPathName, tabList);
+        setStates(tabList, pathname, tabList);
       } else {
         // 如果标签已存在就切换到他
-        setActiveKey(realPathName);
+        setActiveKey(pathname);
       }
     }
   };
@@ -181,12 +183,15 @@ const TabPages = (props) => {
     allRouterData = getAllrouters(routes);
     allRouterkeys = Object.keys(allRouterData);
     // 页面初始化获取上次未关闭标签,如果没有,获取首页
+    if (pathname === '/') {
+      history.push(homePage);
+    }
     if (remberRefresh) {
       let unClosedTabs = storage.session.get('AntTabs');
-      unClosedTabs = hasVal(unClosedTabs) ? unClosedTabs : [realPathName];
+      unClosedTabs = hasVal(unClosedTabs) ? unClosedTabs : [pathname];
       renderTabs(unClosedTabs);
     } else {
-      renderTabs([realPathName]);
+      renderTabs([pathname]);
     }
     // 刷新页面提示
     // window.onbeforeunload = () => '';
@@ -210,8 +215,8 @@ const TabPages = (props) => {
       {Object.keys(tabList).map((item, i) => {
         const { tab, key, content, exact } = tabList[item];
         const tabs = Object.keys(tabList);
-        // const disableClose = tabs.includes('/') && tabs.length === 2 && i === 1;
-        const disableClose = tabs.length === 1;
+        const disableClose = tabs.includes('/') && tabs.length === 2 && i === 1;
+        // const disableClose = tabs.length === 1;
         return (
           <TabPane tab={tab} key={key} closable={!disableClose}>
             <Route key={tab} component={content} exact={exact} />

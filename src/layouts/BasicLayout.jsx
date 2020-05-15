@@ -142,7 +142,7 @@ const BasicLayout = props => {
         {...settings}
       >
         <Authorized authority={authorized.authority} noMatch={noMatch}>
-          <TabPages {...props} homePageKey='/form/basic-form' errorPage={noMatch} maxTab="5" homePage="/dashboard/analysis"/>
+          <TabPages {...props} homePageKey='/form/basic-form' errorPage="/exception/404" maxTab="5" homePage="/dashboard/analysis"/>
         </Authorized>
       </ProLayout>
       <SettingDrawer

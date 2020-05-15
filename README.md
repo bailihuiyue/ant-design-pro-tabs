@@ -58,7 +58,7 @@ pro 4.0 使用方法:
       // 6. animated      是否使用动画切换 Tabs
   ```
 
-4.pro 2.0版本
+4.pro 2.0版本(old.js文件)
 
   ```html
    <Content>

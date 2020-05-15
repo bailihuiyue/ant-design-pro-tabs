@@ -86,6 +86,7 @@ const TabPages = (props) => {
         exact: true,
       };
       setStates(tabList, pathname);
+      // TODO:这块逻辑有点乱,理论上错误只要history.push(errorPage)就可以了,但是目前不行,待优化
       history.push(errorPage)
       return false;
     }

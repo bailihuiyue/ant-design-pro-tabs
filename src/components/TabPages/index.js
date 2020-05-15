@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { history, useIntl } from 'umi';
 import { Tabs, message } from 'antd';
+import { Route } from 'dva/router';
 import storage from 'good-storage';
 import _ from 'lodash';
 import styles from './page.less';
 
 const { TabPane } = Tabs;
-
+let allRouterData = [];
+let allRouterkeys = [];
 // const errorTabKey = 'errorPage';
 
 const TabPages = (props) => {
   const [tabList, setTabList] = useState({});
   const [activeKey, setActiveKey] = useState('');
-  // const [needGoback, setNeedGoback] = useState(false);
-  const [allRoutes, setAllRoutes] = useState(false);
   const intl = useIntl();
+  const realPathName = props.location.pathname === '/' ? props.homePage : props.location.pathname;
   //   判断一个数组或者object是否为空
   const hasVal = (val) => {
     if (!val) {
@@ -45,7 +46,8 @@ const TabPages = (props) => {
               key: node.path,
               locale: node.locale,
               closable: true,
-              content: '',
+              content: node.component,
+              exact: node.exact,
             },
           });
         }
@@ -64,94 +66,80 @@ const TabPages = (props) => {
     // 设置tab激活页面为当前路由
     pathname && setActiveKey(pathname);
     // 将已打开tab存到session中,防止页面刷新
-    session && storage.session.set('AntTabs', Object.keys(currentTabPages));
+    props.remberRefresh && session && storage.session.set('AntTabs', Object.keys(currentTabPages));
   };
 
   const renderTabs = (unClosedTabs) => {
     const {
       location: { pathname },
-      route: { routes },
-      children,
       maxTab,
       errorPage,
     } = props;
 
-    let currentTabPages = {};
     // 输入错误路由
-    const tempRoutes = allRoutes || Object.keys(getAllrouters(routes));
-    if (!tempRoutes.includes(pathname)) {
+    if (!allRouterkeys.includes(pathname)) {
       message.error(`错误: ${pathname}不存在!`);
-      Object.assign(currentTabPages, {
-        [pathname]: {
-          key: pathname,
-          tab: '错误',
-          content: errorPage,
-        },
-      });
-      setStates(currentTabPages, pathname);
+      tabList[pathname] = {
+        key: pathname,
+        tab: '错误',
+        content: errorPage,
+        exact: true,
+      };
+      setStates(tabList, pathname);
     }
     // 有unClosedTabs说明是页面初始化
     if (unClosedTabs) {
       // 先判断local存的数据是否是异常
       // 应对异常情况,比如local里存了/a/b,路由是/z/x
-      if (!unClosedTabs.includes(pathname)) {
-        storage.session.set('AntTabs', [pathname]);
-        Object.assign(currentTabPages, {
-          [pathname]: {
-            key: pathname,
-            tab: transforPathToTxt(pathname),
-            content: children,
-          },
-        });
-        setStates(currentTabPages, pathname, true);
+      if (!unClosedTabs.includes(realPathName)) {
+        storage.session.set('AntTabs', [realPathName]);
+        tabList[realPathName] = {
+          key: realPathName,
+          tab: transforPathToTxt(realPathName),
+          content: allRouterData[realPathName].content,
+          exact: allRouterData[realPathName].exact,
+        };
+        setStates(tabList, realPathName, true);
       } else {
         // 把标签放入一个对象,当前的path塞进页面内容
         unClosedTabs.forEach((key) => {
-          Object.assign(currentTabPages, {
-            [key]: {
-              key,
-              tab: transforPathToTxt(key),
-              content: pathname === key ? children : null,
-            },
-          });
+          tabList[key] = {
+            key,
+            tab: transforPathToTxt(key),
+            content: realPathName === key ? allRouterData[realPathName].content : null,
+            exact: allRouterData[realPathName].exact,
+          };
         });
-        setStates(currentTabPages, pathname, true);
+        setStates(tabList, realPathName, true);
       }
     } else if (hasVal(tabList)) {
       // 新增,切换tab的情况
-      // 先将原tab复制一遍,以防额外的影响
-      currentTabPages = _.cloneDeep(tabList);
       const limit = Number(maxTab);
       // 新增标签的情况限制一下标签数量    // 性能限制开多了会崩溃,可以限制个数
-      if (!currentTabPages[pathname] && limit && Object.keys(tabList).length >= limit) {
+      if (!tabList[pathname] && limit && Object.keys(tabList).length >= limit) {
         message.error(`最大打开${props.maxTab}个标签页,请关闭一些再打开新标签`);
         history.goBack();
         return false;
       }
-      if (!currentTabPages[pathname]?.content) {
+      if (!tabList[realPathName]?.content) {
         // 如果么有content或者标签不存在,再添加
-        currentTabPages[pathname] = {
-          key: pathname,
-          tab: transforPathToTxt(pathname),
-          content: children,
+        tabList[realPathName] = {
+          key: realPathName,
+          tab: transforPathToTxt(realPathName),
+          content: allRouterData[realPathName].content,
+          exact: allRouterData[realPathName].exact,
         };
-        setStates(currentTabPages, pathname, currentTabPages);
+        setStates(tabList, realPathName, tabList);
+      } else {
+        // 如果标签已存在就切换到他
+        setActiveKey(realPathName);
       }
     }
-  };
-
-  const needRouterPush = (key) => {
-    const openedTabs = Object.keys(tabList);
-    if (openedTabs.includes(key) && tabList[key]?.content) {
-      return false;
-    }
-    return true;
   };
 
   const onChange = (key) => {
     setActiveKey(key);
     history.push(key);
-    // needRouterPush(key) && history.push(key);
   };
 
   const remove = (targetKey) => {
@@ -185,29 +173,27 @@ const TabPages = (props) => {
     const {
       location: { pathname },
       route: { routes },
+      remberRefresh,
+      homePage,
     } = props;
 
     // 页面初始化获取所有路由列表,备用
-    setAllRoutes(Object.keys(getAllrouters(routes)));
-
+    allRouterData = getAllrouters(routes);
+    allRouterkeys = Object.keys(allRouterData);
     // 页面初始化获取上次未关闭标签,如果没有,获取首页
-    let unClosedTabs = storage.session.get('AntTabs');
-    unClosedTabs = hasVal(unClosedTabs) ? unClosedTabs : [pathname];
-    renderTabs(unClosedTabs);
+    if (remberRefresh) {
+      let unClosedTabs = storage.session.get('AntTabs');
+      unClosedTabs = hasVal(unClosedTabs) ? unClosedTabs : [realPathName];
+      renderTabs(unClosedTabs);
+    } else {
+      renderTabs([realPathName]);
+    }
     // 刷新页面提示
     // window.onbeforeunload = () => '';
   }, []);
   useEffect(() => {
     renderTabs();
   }, [props.location]);
-  // useEffect(() => {
-  //   if (needGoback) {
-  //     message.error(`最大打开${props.maxTab}个标签页,请关闭一些再打开新标签`);
-  //     history.goBack();
-  //     setNeedGoback(false);
-  //   }
-  // }, [needGoback]);
-
   return (
     <Tabs
       className={styles.content_tab}
@@ -219,14 +205,16 @@ const TabPages = (props) => {
       hideAdd
       type="editable-card"
       onEdit={onEdit}
+      animated
     >
       {Object.keys(tabList).map((item, i) => {
-        const { tab, key, content } = tabList[item];
+        const { tab, key, content, exact } = tabList[item];
         const tabs = Object.keys(tabList);
-        const disableClose = tabs.includes('/') && tabs.length === 2 && i === 1;
+        // const disableClose = tabs.includes('/') && tabs.length === 2 && i === 1;
+        const disableClose = tabs.length === 1;
         return (
           <TabPane tab={tab} key={key} closable={!disableClose}>
-            {content}
+            <Route key={tab} component={content} exact={exact} />
           </TabPane>
         );
       })}

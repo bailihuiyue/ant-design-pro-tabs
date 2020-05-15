@@ -30,7 +30,7 @@ const noMatch = (
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>{
+const menuDataRender = menuList => {
   return menuList.map(item => {
     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
     return Authorized.check(item.authority, localItem, null);
@@ -132,8 +132,8 @@ const BasicLayout = props => {
           return first ? (
             <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
           ) : (
-            <span>{route.breadcrumbName}</span>
-          );
+              <span>{route.breadcrumbName}</span>
+            );
         }}
         footerRender={() => defaultFooterDom}
         menuDataRender={menuDataRender}
@@ -142,7 +142,7 @@ const BasicLayout = props => {
         {...settings}
       >
         <Authorized authority={authorized.authority} noMatch={noMatch}>
-          <TabPages {...props} homePageKey='/form/basic-form' errorPage="/exception/404" maxTab="5" homePage="/dashboard/analysis"/>
+          <TabPages {...props} errorPage="/exception/404" remberRefresh animated maxTab="5" homePage="/dashboard/analysis" />
         </Authorized>
       </ProLayout>
       <SettingDrawer

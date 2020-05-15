@@ -21,13 +21,13 @@
 - ###### 类库使用:good-storage
 
 - ###### TODO:1. 隐藏标签实现类vue的keep-alive
-  ######          2. 输入错误路由逻辑有点乱,待优化
+  ######          ~~2. 输入错误路由逻辑有点乱,待优化~~
 - ###### BUG:
   ######          1. 通过路由传参会找不到页面,从而报错
 
   ######          2.由于pro4.0没有menuData传进来,渲染全靠props.routes渲染,所以国际化可能会有点问题,导致路由路径必须和国际化一直,比如路径是a/b/c,那么国际化必须写成menu:{a:{b:{c:"xxxxx"}}},否则会tab可能会显示不正常
 
-  ######          3.输入错误的路由时逻辑还有点小问题,待修复
+  ######          ~~3.输入错误的路由时逻辑还有点小问题,待修复~~
 
   ######          4.页签限制功能(maxTab),计算有时不准,待修复
 
@@ -47,8 +47,15 @@ pro 4.0 使用方法:
 
   ```html
     <Authorized authority={authorized.authority} noMatch={noMatch}>
-      <TabPages {...props} homePageKey='/form/basic-form' errorPage={noMatch} maxTab="5" remberRefresh homePage="/dashboard/analysis"/> // maxTab="5"作用:标签开多了可能导致浏览器崩溃,设置一个最大数量,超出会提示  remberRefresh:刷新页面也能记住之前打开的标签
-    </Authorized> // homePageKey就是项目首页的url地址
+      <TabPages {...props} maxTab="5" preventReload remberRefresh animated homePage="/dashboard/analysis" errorPage="/exception/404" /> 
+    </Authorized>
+      // 参数:
+      // 1. maxTab="5"    标签开多了可能导致浏览器崩溃,设置一个最大数量,超出会提示
+      // 2. remberRefresh 刷新页面也能记住之前打开的标签
+      // 3. preventReload 刷新页面会提示
+      // 4. homePage      主页url
+      // 5. errorPage     错误页url
+      // 6. animated      是否使用动画切换 Tabs
   ```
 
 4.pro 2.0版本

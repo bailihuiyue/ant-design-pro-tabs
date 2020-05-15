@@ -3,7 +3,6 @@ import { history, useIntl } from 'umi';
 import { Tabs, message } from 'antd';
 import { Route } from 'dva/router';
 import storage from 'good-storage';
-import _ from 'lodash';
 import styles from './page.less';
 
 const { TabPane } = Tabs;
@@ -15,7 +14,6 @@ const TabPages = (props) => {
   const [tabList, setTabList] = useState({});
   const [activeKey, setActiveKey] = useState('');
   const intl = useIntl();
-  const realPathName = props.location.pathname === '/' ? props.homePage : props.location.pathname;
   //   判断一个数组或者object是否为空
   const hasVal = (val) => {
     if (!val) {
@@ -78,16 +76,7 @@ const TabPages = (props) => {
 
     // 输入错误路由
     if (!allRouterkeys.includes(pathname)) {
-      message.error(`错误: ${pathname}不存在!`);
-      tabList[errorPage] = {
-        key: errorPage,
-        tab: '错误',
-        content: allRouterData[errorPage].content,
-        exact: true,
-      };
-      setStates(tabList, pathname);
-      // TODO:这块逻辑有点乱,理论上错误只要history.push(errorPage)就可以了,但是目前不行,待优化
-      history.push(errorPage)
+      history.push(errorPage);
       return false;
     }
     // 有unClosedTabs说明是页面初始化
@@ -115,7 +104,7 @@ const TabPages = (props) => {
         });
         setStates(tabList, pathname, true);
       }
-    } else if (hasVal(tabList)) {
+    } else {
       // 新增,切换tab的情况
       const limit = Number(maxTab);
       // 新增标签的情况限制一下标签数量    // 性能限制开多了会崩溃,可以限制个数
@@ -141,7 +130,7 @@ const TabPages = (props) => {
   };
 
   const onChange = (key) => {
-    setActiveKey(key);
+    // setActiveKey(key);
     history.push(key);
   };
 
@@ -178,6 +167,7 @@ const TabPages = (props) => {
       route: { routes },
       remberRefresh,
       homePage,
+      preventReload,
     } = props;
 
     // 页面初始化获取所有路由列表,备用
@@ -190,12 +180,12 @@ const TabPages = (props) => {
     if (remberRefresh) {
       let unClosedTabs = storage.session.get('AntTabs');
       unClosedTabs = hasVal(unClosedTabs) ? unClosedTabs : [pathname];
+      // TODO:这块可以和下面的useEffect合在一起
       renderTabs(unClosedTabs);
-    } else {
-      renderTabs([pathname]);
     }
     // 刷新页面提示
-    // window.onbeforeunload = () => '';
+    if(preventReload) window.onbeforeunload = () => '';
+
   }, []);
   useEffect(() => {
     renderTabs();
@@ -211,13 +201,13 @@ const TabPages = (props) => {
       hideAdd
       type="editable-card"
       onEdit={onEdit}
-      animated
+      animated={!!props.animated}
     >
       {Object.keys(tabList).map((item, i) => {
         const { tab, key, content, exact } = tabList[item];
         const tabs = Object.keys(tabList);
-        const disableClose = tabs.includes('/') && tabs.length === 2 && i === 1;
-        // const disableClose = tabs.length === 1;
+        const disableClose =
+          (tabs.includes('/') && tabs.length === 2 && i === 1) || tabs.length === 1;
         return (
           <TabPane tab={tab} key={key} closable={!disableClose}>
             <Route key={tab} component={content} exact={exact} />

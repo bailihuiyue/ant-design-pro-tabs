@@ -41,7 +41,7 @@
 
 pro 4.0 使用方法: 
 
-1. 复制src/components/TabPages文件夹到自己的项目当中
+1. 复制src/components/TabPages文件夹到自己的项目当中 (或者npm i ant_design_pro_tabs)
 2. src/layouts/BasicLayout.js中引入该组件
 3.  
 
@@ -71,5 +71,5 @@ pro 4.0 使用方法:
 5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 6. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
 
-<img src="https://github.com/bailihuiyue/ant-design-pro-tabs/raw/master/money.png" width="200px"> 
+<img src="https://gitee.com/Onces/images/raw/master/money.png" width="200px"> 
 <div>一块两块不嫌少,一百两百不嫌多^_^

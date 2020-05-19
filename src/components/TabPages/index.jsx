@@ -146,8 +146,8 @@ const TabPages = (props) => {
     } else {
       activeKeyTemp = activeKey;
     }
-    setTabList(tabListObj);
-    setActiveKey(activeKeyTemp);
+    
+    setStates(tabListObj, activeKeyTemp, true);
 
     // 切换tab同时也变url(关闭当前页面需要跳转到其他路由)
     if (activeKey === targetKey) {
@@ -184,7 +184,7 @@ const TabPages = (props) => {
       renderTabs(unClosedTabs);
     }
     // 刷新页面提示
-    if(preventReload) window.onbeforeunload = () => '';
+    if (preventReload) window.onbeforeunload = () => '';
 
   }, []);
   useEffect(() => {

@@ -147,7 +147,7 @@ const TabPages = (props) => {
       activeKeyTemp = activeKey;
     }
     
-    setStates(tabListObj, activeKeyTemp, true);
+    setStates(tabListObj, null, true);
 
     // 切换tab同时也变url(关闭当前页面需要跳转到其他路由)
     if (activeKey === targetKey) {

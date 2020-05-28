@@ -71,5 +71,10 @@ pro 4.0 使用方法:
 5. 多标签的信息是存储在sessionStorage的AntTabs中,建议退出登录时清理一下,避免造成bug
 6. 有问题欢迎多交流,github不常在线,着急的话请发邮件或者加我QQ(同邮箱)
 
-<img src="https://gitee.com/Onces/images/raw/master/money.png" width="200px"> 
-<div>一块两块不嫌少,一百两百不嫌多^_^
+<div>
+<img src="https://gitee.com/Onces/images/raw/master/money.png" width=200>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://gitee.com/Onces/images/raw/master/zhifubaohongbao.jpg" width=200>
+<div>你的支持就是我最大的动力
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+扫个红包也是不错的</div>   
+</div>

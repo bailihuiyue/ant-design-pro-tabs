@@ -69,7 +69,7 @@
     "numeral": "^2.0.6",
     "nzh": "^1.0.3",
     "omit.js": "^1.0.2",
-    "path-to-regexp": "2.4.0",
+    "path-to-regexp": "3.3.0",
     "prop-types": "^15.5.10",
     "qs": "^6.9.0",
     "react": "^16.8.6",
